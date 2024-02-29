@@ -27,7 +27,7 @@ const LogSchema = new Schema({
   },
   description: {
     type: String,
-    required: true,
+    required: false,
     maxlength: [100, 'Description should not exceed 100 characters']
   }
 });
