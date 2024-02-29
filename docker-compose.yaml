@@ -1,18 +1,24 @@
-version: '3'
+version: '3.8'
 services:
-  epochease-server:
+  mongo:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+  app:
     build: ./server
     ports:
       - "3000:3000"
     environment:
-      MONGO_DB_URI: mongodb://epochease-mongo:27017/epochease
+      - MONGODB_URI=mongodb://mongo:27017/epochease
     depends_on:
-      - epochease-mongo
-  epochease-mongo:
-    image: mongo
-    ports:
-      - "27017:27017"
+      - mongo
     volumes:
-      - epochease-mongo-data:/data/db
+      - ./server:/usr/src/app # Mount the server code directory for live reloading
+      - /usr/src/app/node_modules
+    command: npx nodemon app.js
+
 volumes:
-  epochease-mongo-data:
+  mongo-data:
