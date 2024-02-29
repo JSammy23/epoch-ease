@@ -1,0 +1,18 @@
+version: '3'
+services:
+  epochease-server:
+    build: ./server
+    ports:
+      - "3000:3000"
+    environment:
+      MONGO_DB_URI: mongodb://epochease-mongo:27017/epochease
+    depends_on:
+      - epochease-mongo
+  epochease-mongo:
+    image: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - epochease-mongo-data:/data/db
+volumes:
+  epochease-mongo-data:
